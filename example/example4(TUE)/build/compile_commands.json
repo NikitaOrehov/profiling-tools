@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/kinro/project/profiling-tools/example4(TUE)/build",
+  "command": "mpicxx -isystem /usr/local/openmpi/include -g -std=gnu++17 -g -O0 -Wall -o CMakeFiles/mpi_app.dir/main.cpp.o -c \"/home/kinro/project/profiling-tools/example4(TUE)/main.cpp\"",
+  "file": "/home/kinro/project/profiling-tools/example4(TUE)/main.cpp",
+  "output": "CMakeFiles/mpi_app.dir/main.cpp.o"
+}
+]

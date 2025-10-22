@@ -1,0 +1,101 @@
+100 dynamic_trace_events
+# FunctionId Group Tag "Name Type" Parameters
+0 TAUEVENT 0 ".TAU <unknown event>" TriggerValue
+1 TAU_DEFAULT 0 ".TAU application " EntryExit
+2 TAU_DEFAULT 0 "taupreload_main " EntryExit
+3 MPI 0 "MPI_Init()  " EntryExit
+5 MPI 0 "MPI_Comm_rank()  " EntryExit
+6 MPI 0 "MPI_Comm_size()  " EntryExit
+7 MPI 0 "MPI_Barrier()  " EntryExit
+8 MPI 0 "MPI_Recv()  " EntryExit
+10 MPI 0 "MPI_Send()  " EntryExit
+14 MPI 0 "MPI_Finalize()  " EntryExit
+4 TAUEVENT 0 "TauTraceClockOffsetStart" TriggerValue
+9 TAUEVENT 0 "Message size received from all nodes" TriggerValue
+11 TAUEVENT 0 "Message size sent to all nodes" TriggerValue
+12 TAUEVENT 0 "Message size sent to node 2" TriggerValue
+13 TAUEVENT 0 "Message size sent to node 2 : taupreload_main => MPI_Send()  " TriggerValue
+15 TAUEVENT 0 "TauTraceClockOffsetEnd" TriggerValue
+16 TAUEVENT 0 "CPU Cores | 4" TriggerValue
+17 TAUEVENT 0 "CPU MHz | 2399.987" TriggerValue
+18 TAUEVENT 0 "CPU Type | Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz" TriggerValue
+19 TAUEVENT 0 "CPU Vendor | GenuineIntel" TriggerValue
+20 TAUEVENT 0 "CPUs Allowed | ff" TriggerValue
+21 TAUEVENT 0 "CPUs Allowed List | 0-7" TriggerValue
+22 TAUEVENT 0 "CWD | /home/kinro/project/profiling-tools/example4(TUE)/build" TriggerValue
+23 TAUEVENT 0 "Cache Size | 8192 KB" TriggerValue
+24 TAUEVENT 0 "Command Line | ./mpi_app" TriggerValue
+25 TAUEVENT 0 "Executable | /home/kinro/project/profiling-tools/example4(TUE)/build/mpi_app" TriggerValue
+26 TAUEVENT 0 "Hostname | kinro-IdeaPad-L340-15IRH-Gaming" TriggerValue
+27 TAUEVENT 0 "Local Time | 2025-10-22T02:30:56+03:00" TriggerValue
+28 TAUEVENT 0 "MPI Processor Name | kinro-IdeaPad-L340-15IRH-Gaming" TriggerValue
+29 TAUEVENT 0 "Memories Allowed | 00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001" TriggerValue
+30 TAUEVENT 0 "Memories Allowed List | 0" TriggerValue
+31 TAUEVENT 0 "Memory Size | 15728584 kB" TriggerValue
+32 TAUEVENT 0 "Node Name | kinro-IdeaPad-L340-15IRH-Gaming" TriggerValue
+33 TAUEVENT 0 "OS Machine | x86_64" TriggerValue
+34 TAUEVENT 0 "OS Name | Linux" TriggerValue
+35 TAUEVENT 0 "OS Release | 6.14.0-33-generic" TriggerValue
+36 TAUEVENT 0 "OS Version | #33-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep 17 23:22:02 UTC 2025" TriggerValue
+37 TAUEVENT 0 "Starting Timestamp | 1761089456624020" TriggerValue
+38 TAUEVENT 0 "TAU Architecture | default" TriggerValue
+39 TAUEVENT 0 "TAU Config |  -mpi -prefix=/home/kinro/tau" TriggerValue
+40 TAUEVENT 0 "TAU Makefile | /home/kinro/tau/x86_64/lib/Makefile.tau-mpi" TriggerValue
+41 TAUEVENT 0 "TAU Version | 2.32.1-git" TriggerValue
+42 TAUEVENT 0 "TAU_BFD_LOOKUP | on" TriggerValue
+43 TAUEVENT 0 "TAU_CALLPATH_DEPTH | 2" TriggerValue
+44 TAUEVENT 0 "TAU_CALLSITE_DEPTH | 1" TriggerValue
+45 TAUEVENT 0 "TAU_COMM_MATRIX | on" TriggerValue
+46 TAUEVENT 0 "TAU_CUDA_BINARY_EXE | " TriggerValue
+47 TAUEVENT 0 "TAU_CUPTI_API | runtime" TriggerValue
+48 TAUEVENT 0 "TAU_CURRENT_TIMER_EXIT_PARAMS | off" TriggerValue
+49 TAUEVENT 0 "TAU_EBS_KEEP_UNRESOLVED_ADDR | off" TriggerValue
+50 TAUEVENT 0 "TAU_IBM_BG_HWP_COUNTERS | off" TriggerValue
+51 TAUEVENT 0 "TAU_MEASURE_TAU | off" TriggerValue
+52 TAUEVENT 0 "TAU_MEMDBG_PROTECT_ABOVE | off" TriggerValue
+53 TAUEVENT 0 "TAU_MEMDBG_PROTECT_BELOW | off" TriggerValue
+54 TAUEVENT 0 "TAU_MEMDBG_PROTECT_FREE | off" TriggerValue
+55 TAUEVENT 0 "TAU_OPENMP_RUNTIME | on" TriggerValue
+56 TAUEVENT 0 "TAU_OPENMP_RUNTIME_EVENTS | on" TriggerValue
+57 TAUEVENT 0 "TAU_OPENMP_RUNTIME_STATES | off" TriggerValue
+58 TAUEVENT 0 "TAU_OUTPUT_CUDA_CSV | off" TriggerValue
+59 TAUEVENT 0 "TAU_PAPI_MULTIPLEXING | off" TriggerValue
+60 TAUEVENT 0 "TAU_PROFILE | on" TriggerValue
+61 TAUEVENT 0 "TAU_PROFILE_FORMAT | profile" TriggerValue
+62 TAUEVENT 0 "TAU_RECYCLE_THREADS | off" TriggerValue
+63 TAUEVENT 0 "TAU_REGION_ADDRESSES | off" TriggerValue
+64 TAUEVENT 0 "TAU_SAMPLING | off" TriggerValue
+65 TAUEVENT 0 "TAU_SHOW_MEMORY_FUNCTIONS | off" TriggerValue
+66 TAUEVENT 0 "TAU_SIGNALS_GDB | off" TriggerValue
+67 TAUEVENT 0 "TAU_SYNCHRONIZE_CLOCKS | on" TriggerValue
+68 TAUEVENT 0 "TAU_THROTTLE | on" TriggerValue
+69 TAUEVENT 0 "TAU_THROTTLE_NUMCALLS | 100000" TriggerValue
+70 TAUEVENT 0 "TAU_THROTTLE_PERCALL | 10" TriggerValue
+71 TAUEVENT 0 "TAU_TRACE | on" TriggerValue
+72 TAUEVENT 0 "TAU_TRACE_FORMAT | tau" TriggerValue
+73 TAUEVENT 0 "TAU_TRACK_CUDA_CDP | off" TriggerValue
+74 TAUEVENT 0 "TAU_TRACK_CUDA_ENV | off" TriggerValue
+75 TAUEVENT 0 "TAU_TRACK_CUDA_INSTRUCTIONS | " TriggerValue
+76 TAUEVENT 0 "TAU_TRACK_CUDA_SASS | off" TriggerValue
+77 TAUEVENT 0 "TAU_TRACK_HEADROOM | off" TriggerValue
+78 TAUEVENT 0 "TAU_TRACK_HEAP | off" TriggerValue
+79 TAUEVENT 0 "TAU_TRACK_IO_PARAMS | off" TriggerValue
+80 TAUEVENT 0 "TAU_TRACK_MEMORY_FOOTPRINT | off" TriggerValue
+81 TAUEVENT 0 "TAU_TRACK_MEMORY_LEAKS | off" TriggerValue
+82 TAUEVENT 0 "TAU_TRACK_MESSAGE | on" TriggerValue
+83 TAUEVENT 0 "TAU_TRACK_SIGNALS | off" TriggerValue
+84 TAUEVENT 0 "TAU_TRACK_UNIFIED_MEMORY | off" TriggerValue
+85 TAUEVENT 0 "TAU_VERBOSE_RANK | -1" TriggerValue
+86 TAUEVENT 0 "Timestamp | 1761089456624210" TriggerValue
+87 TAUEVENT 0 "UTC Time | 2025-10-21T23:30:56Z" TriggerValue
+88 TAUEVENT 0 "pid | 22575" TriggerValue
+89 TAUEVENT 0 "tid | 22575" TriggerValue
+90 TAUEVENT 0 "username | kinro" TriggerValue
+60000 TRACER 0 "EV_INIT" none
+60001 TRACER 0 "FLUSH" EntryExit
+60003 TRACER 0 "FLUSH_CLOSE" none
+60004 TRACER 0 "FLUSH_INITM" none
+60005 TRACER 0 "WALL_CLOCK" none
+60006 TRACER 0 "CONT_EVENT" none
+60007 TAU_MESSAGE -7 "MESSAGE_SEND" par
+60008 TAU_MESSAGE -8 "MESSAGE_RECV" par

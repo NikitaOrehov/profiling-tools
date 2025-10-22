@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/kinro/project/profiling-tools/example5(HPCToolKit)/build",
+  "command": "mpicxx -isystem /usr/local/openmpi/include  -O2 -g -fno-omit-frame-pointer -g -o CMakeFiles/simple_mpi.dir/main.cpp.o -c \"/home/kinro/project/profiling-tools/example5(HPCToolKit)/main.cpp\"",
+  "file": "/home/kinro/project/profiling-tools/example5(HPCToolKit)/main.cpp",
+  "output": "CMakeFiles/simple_mpi.dir/main.cpp.o"
+}
+]

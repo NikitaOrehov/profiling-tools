@@ -1,0 +1,17 @@
+S=C=A=N: Wed Oct 15 16:43:26 2025: Collect start
+/usr/local/openmpi/bin/mpirun -np 4 ./simple_mpi
+Process 0 started
+Process 0: Doing heavy work...
+Process 1 started
+Process 1: Doing light work...
+Process 2 started
+Process 2: Doing light work...
+Process 3 started
+Process 3: Doing light work...
+Process 0: Heavy work completed: 4999999950000.000000
+Root process preparing data...
+Process 0 finished
+Process 0 finished
+Process 0 finished
+Process 0 finished
+S=C=A=N: Wed Oct 15 16:43:28 2025: Collect done (status=0) 2s

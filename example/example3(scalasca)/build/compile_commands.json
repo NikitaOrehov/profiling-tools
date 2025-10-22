@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/kinro/project/profiling-tools/example3(scalasca)/build",
+  "command": "scorep mpicxx -isystem /usr/local/openmpi/include  -O2 -g -g -o CMakeFiles/simple_mpi.dir/main.cpp.o -c \"/home/kinro/project/profiling-tools/example3(scalasca)/main.cpp\"",
+  "file": "/home/kinro/project/profiling-tools/example3(scalasca)/main.cpp",
+  "output": "CMakeFiles/simple_mpi.dir/main.cpp.o"
+}
+]
