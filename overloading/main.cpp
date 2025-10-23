@@ -1,27 +1,8 @@
-
-#include <mpi.h>
+﻿#include "new_mpi.h"
 #include <iostream>
-#include <dlfcn.h>
 #include <random>
 
-static int (*real_PMPI_Init)(int* argc, char*** argv) = nullptr;
 
-int MPI_Init(int* argc, char*** argv) {
-    std::cout << "🎯 Перехвачен вызов MPI_Init!\n";
-
-    if (real_PMPI_Init == nullptr) {
-        real_PMPI_Init = (int (*)(int*, char***))dlsym(RTLD_NEXT, "PMPI_Init");
-        
-        if (real_PMPI_Init == nullptr) {
-            std::cerr << "❌ Ошибка: Не найдена PMPI_Init\n";
-            return -1;
-        }
-    }
-
-    std::cout << "🎯 1\n";
-    
-    return real_PMPI_Init(argc, argv);
-}
 
 int main(int* argc, char*** argv){
     MPI_Init(argc, argv);
@@ -34,10 +15,15 @@ int main(int* argc, char*** argv){
         for (int i = 0; i < size_a; i++){
             a[i] = rand() % size;
         }
+        MPI_Send(a, size_a, MPI_INT, 1, 0, MPI_COMM_WORLD);
     }
-    MPI_Bcast(a, size_a, MPI_INT, 0, MPI_COMM_WORLD);
+    if (rank == 1){
+        MPI_Recv(a, size_a, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        for (int i = 0; i < size_a; i++){
+            std::cout << a[i] << " ";
+        }
+        std::cout << "\n";
+    }
     MPI_Finalize();
     return 0;
 }
-
-// Закрываем extern "C" блок
