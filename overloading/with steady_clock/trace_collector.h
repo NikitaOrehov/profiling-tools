@@ -71,7 +71,6 @@ public:
 
 static std::unique_ptr<TraceCollector> global_collector;
 
-// Макрос для удобства
 #define TRACE_MPI_CALL(func_name, ...) \
     do { \
         if (!global_collector) break; \

@@ -8,7 +8,7 @@
 #include <memory>
 #include "trace_collector.h"
 
-static std::unique_ptr<TraceCollector> global_collector;
+static std::unique_ptr<TraceCollector> global_collector = std::make_unique<TraceCollector>();;
 
 #define TRACE_MPI_POINT_TO_POINT(func_name, dest, ...) \
     do { \
@@ -53,7 +53,7 @@ static std::unique_ptr<TraceCollector> global_collector;
 
 
 int MPI_Init(int *argc, char ***argv) {
-    global_collector = std::make_unique<TraceCollector>();
+    //global_collector = std::make_unique<TraceCollector>();
 
     auto chrono_start = std::chrono::steady_clock::now();
     int result = PMPI_Init(argc, argv);
@@ -72,6 +72,7 @@ int MPI_Init(int *argc, char ***argv) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     global_collector->set_process(rank);
+    global_collector->CreateFolder();
 
     return result;
 }

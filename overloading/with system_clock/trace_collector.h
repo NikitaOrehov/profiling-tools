@@ -5,6 +5,7 @@
 #include <iostream>
 #include <mpi.h>
 #include <fstream>
+#include <filesystem>
 
 using time_metric = std::chrono::microseconds;
 
@@ -19,6 +20,7 @@ class TraceCollector {
 private:
     std::vector<TraceItem> _trace;
     int _rank_process;
+    std::string FolderName;
     
     std::chrono::system_clock::time_point _system_start;
     std::chrono::steady_clock::time_point _steady_start;
@@ -43,8 +45,36 @@ public:
             now - _steady_start).count();
     }
 
-    ~TraceCollector() {
-        std::string file_name = "trace_rank_" + std::to_string(_rank_process);
+    void CreateFolder(){
+        FolderName = "Traces";
+        int count = 1;
+        if (!_rank_process){
+            while (true){
+                std::string temp_name = FolderName + std::to_string(count);
+                if (!std::filesystem::exists(temp_name)){
+                    std::filesystem::create_directory(temp_name);
+                    break;
+                }
+                else{
+                    count++;
+                }
+            }
+        }
+        MPI_Bcast(&count, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        FolderName += std::to_string(count);
+    }
+
+    void CreateMetaFile(std::string FolderName){
+        std::string file_name = FolderName + "/meta_file";
+        std::ofstream file(file_name);
+
+        file << "microseconds\n";
+
+        file.close();
+    }
+
+    void CreateTraceFile(std::string FolderName){
+        std::string file_name = FolderName + "/trace_rank_" + std::to_string(_rank_process);
         std::ofstream file(file_name);
         
         file << "SYSTEM_START_US: " << std::chrono::duration_cast<time_metric>(
@@ -60,5 +90,12 @@ public:
             file << "\n";
         }
         file.close();
+    }
+
+    ~TraceCollector() {
+        if (_rank_process == 0){
+            CreateMetaFile(FolderName);
+        }
+        CreateTraceFile(FolderName);
     }
 };

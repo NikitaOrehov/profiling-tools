@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.19)
 project(GUI LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 qt_standard_project_setup()
 
@@ -11,6 +13,11 @@ qt_add_executable(GUI
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    extractor.h extractor.cpp
+    traceswidget.h traceswidget.cpp
+    tracesscrollarea.h tracesscrollarea.cpp
+
+
 )
 
 target_link_libraries(GUI
@@ -18,6 +25,8 @@ target_link_libraries(GUI
         Qt::Core
         Qt::Widgets
 )
+target_link_libraries(GUI PRIVATE Qt6::Widgets)
+target_link_libraries(GUI PRIVATE Qt6::Widgets)
 
 include(GNUInstallDirs)
 
