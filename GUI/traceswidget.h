@@ -24,6 +24,8 @@ private:
 
     const int height_item = 100;
     const int height_spacer = 20;
+    const int _timeScaleHeight = 30;
+    const int _timeTextHeight = 15;
 
     double pixel_per_microsecond = 0.1;
     double _currentScale = 1.0;
@@ -45,6 +47,8 @@ protected:
 
 private:
     int calculateTotalHeight() const;
+    long long calculateGridStep(long long timeRange, double pixelsPerUnit) const;
+    QString formatTime(long long time) const;
 
 signals:
 };

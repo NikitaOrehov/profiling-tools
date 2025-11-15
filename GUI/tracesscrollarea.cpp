@@ -85,7 +85,7 @@ void TracesScrollArea::zoomToMouse(double factor, const QPoint &globalPos) {
     double newScale = oldScale * factor;
 
     double minScale = static_cast<double>(viewport()->width()) / tracesWidget->getTracesWidth();
-    newScale = qMax(minScale, newScale);
+    newScale = qBound(minScale, newScale, 15.0);
 
     tracesWidget->setScale(newScale);
 
@@ -109,11 +109,11 @@ void TracesScrollArea::zoomToMouse(double factor, const QPoint &globalPos) {
 
     updateScrollBars();
 
-    qDebug() << "Zoom:" << oldScale << "->" << newScale
-             << "Min scale:" << minScale
-             << "Widget width:" << maxWidth
-             << "Viewport:" << viewport()->width()
-             << "Scroll:" << newHScroll << "/" << horizontalScrollBar()->maximum();
+    // qDebug() << "Zoom:" << oldScale << "->" << newScale
+    //          << "Min scale:" << minScale
+    //          << "Widget width:" << maxWidth
+    //          << "Viewport:" << viewport()->width()
+    //          << "Scroll:" << newHScroll << "/" << horizontalScrollBar()->maximum();
 }
 
 
@@ -131,6 +131,6 @@ void TracesScrollArea::updateScrollBars() {
     horizontalScrollBar()->setPageStep(viewportSize.width());
     verticalScrollBar()->setPageStep(viewportSize.height());
 
-    qDebug() << "Scrollbars - Content:" << contentWidth << "Viewport:" << viewportSize.width()
-             << "Max scroll:" << horizontalScrollBar()->maximum();
+    // qDebug() << "Scrollbars - Content:" << contentWidth << "Viewport:" << viewportSize.width()
+    //          << "Max scroll:" << horizontalScrollBar()->maximum();
 }

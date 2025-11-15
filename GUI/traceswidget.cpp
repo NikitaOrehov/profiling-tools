@@ -22,7 +22,7 @@ QSize TracesWidget::minimumSizeHint() const {
 }
 
 void TracesWidget::setScale(double scale) {
-    _currentScale = qBound(0.1, scale, 10.0);
+    _currentScale = scale;
     update();
     updateGeometry();
 }
@@ -38,12 +38,42 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
     for (int x = 0; x <= _maxEnd * pixel_per_microsecond; x += 500) {
         painter.drawLine(x, 0, x, height());
     }
+    painter.restore();
 
+    painter.save();
+
+    painter.fillRect(0, 0, width(), _timeScaleHeight, QColor(240, 240, 240));
+    painter.setPen(QPen(Qt::black, 1));
+    painter.drawLine(0, _timeScaleHeight, width(), _timeScaleHeight);
+
+    long long timeRange = _maxEnd;
+    double pixelsPerUnit = (getTracesWidth() * _currentScale) / timeRange;
+
+    long long gridStep = calculateGridStep(timeRange, pixelsPerUnit);
+
+    painter.setPen(QPen(Qt::black, 1));
+    QFont font = painter.font();
+    font.setPointSize(8);
+    painter.setFont(font);
+
+    for (long long time = gridStep; time <= _maxEnd; time += gridStep) {
+        double x = (time) * pixel_per_microsecond * _currentScale;
+        painter.drawLine(x, _timeScaleHeight - 10, x, _timeScaleHeight);
+
+        QString timeText = formatTime(time);
+        QRect textRect(x - 50, 5, 100, _timeTextHeight);
+        painter.drawText(textRect, Qt::AlignCenter, timeText);
+    }
+
+    painter.restore();
+
+    painter.save();
+    painter.scale(_currentScale, 1.0);
     painter.setPen(QPen(Qt::blue, 2));
     painter.setBrush(QBrush(QColor(200, 220, 255)));
 
     for (size_t number_trace = 0; number_trace < _traces.size(); ++number_trace) {
-        int y_start = 20 + number_trace * (height_item + height_spacer);
+        int y_start = _timeScaleHeight + _timeTextHeight +  + number_trace * (height_item + height_spacer);
 
         painter.setPen(QPen(Qt::black, 1));
         painter.drawText(10, y_start + height_item / 2, QString("Trace %1").arg(number_trace + 1));
@@ -62,13 +92,24 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
             QRect Rect(x_start, y_start, item_width, height_item);
             painter.drawRect(Rect);
 
-            if (item_width * _currentScale > 30) {
+            painter.save();
+            painter.scale(1.0 / _currentScale, 1.0);
+
+            QRect textRect(
+                Rect.x() * _currentScale,
+                Rect.y(),
+                Rect.width() * _currentScale,
+                Rect.height()
+                );
+
+            if (textRect.width() > 30) {
                 painter.setPen(QPen(Qt::black, 1));
                 QString text = QString::fromStdString(item.name) +
-                               QString("\n%1-%2 µs").arg(item.start).arg(item.end);
-                painter.drawText(Rect, Qt::AlignCenter, text);
-                painter.setPen(QPen(Qt::blue, 2));
+                               QString("\n%1µs").arg(item.end - item.start);
+                painter.drawText(textRect, Qt::AlignCenter, text);
             }
+
+            painter.restore();
         }
     }
 
@@ -81,6 +122,36 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
 }
 
 int TracesWidget::calculateTotalHeight() const {
-    return 20 + _traces.size() * (height_item + height_spacer);
+    return _timeScaleHeight + _timeTextHeight + _traces.size() * (height_item + height_spacer);
+}
+
+
+long long TracesWidget::calculateGridStep(long long timeRange, double pixelsPerUnit) const {
+    double desiredPixelStep = 50.0;
+    long long timeStep = desiredPixelStep / pixelsPerUnit;
+
+    if (timeStep <= 10) return 10;
+    if (timeStep <= 50) return 50;
+    if (timeStep <= 100) return 100;
+    if (timeStep <= 500) return 500;
+    if (timeStep <= 1000) return 1000;
+    if (timeStep <= 5000) return 5000;
+
+    for (long long i = 10000; i <= 1000000000000000; i += 5000){
+        if (timeStep < i) return i;
+    }
+    return 1000000000000000;
+}
+
+QString TracesWidget::formatTime(long long time) const {
+    if (time < 1000) {
+        return QString("%1 ns").arg(time);
+    } else if (time < 1000000) {
+        return QString("%1 µs").arg(time);
+    } else if (time < 1000000000) {
+        return QString("%1 ms").arg(time / 1000.0, 0, 'f', 1);
+    } else {
+        return QString("%1 s").arg(time / 1000000.0, 0, 'f', 2);
+    }
 }
 
