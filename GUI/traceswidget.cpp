@@ -73,7 +73,7 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
     painter.setBrush(QBrush(QColor(200, 220, 255)));
 
     for (size_t number_trace = 0; number_trace < _traces.size(); ++number_trace) {
-        int y_start = _timeScaleHeight + _timeTextHeight +  + number_trace * (height_item + height_spacer);
+        int y_start = _timeScaleHeight + _timeTextHeight + number_trace * (height_item + height_spacer);
 
         painter.setPen(QPen(Qt::black, 1));
         painter.drawText(10, y_start + height_item / 2, QString("Trace %1").arg(number_trace + 1));
@@ -92,6 +92,32 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
             QRect Rect(x_start, y_start, item_width, height_item);
             painter.drawRect(Rect);
 
+            painter.save();
+            painter.setPen(QPen(Qt::black, 1));
+            painter.setBrush(QBrush(QColor(200, 220, 255)));
+            for (int trace_dest: item.dests){
+                for (int index = 0; index < _traces[trace_dest].size(); index++){
+                    if (item.name == "Send" && _traces[trace_dest][index].name == "Recv" && !_traces[trace_dest][index].marks && _traces[trace_dest][index].dests.at(0) == number_trace){
+                        QPoint start = QPoint(x_start + item_width, y_start + height_item / 2);
+                        QPoint end = QPoint();
+                        auto item_dest = _traces[trace_dest][index];
+                        end.setX(item_dest.end * pixel_per_microsecond);
+                        end.setY(_timeScaleHeight + _timeTextHeight + trace_dest * (height_item + height_spacer) + height_item / 2);
+                        drawArrow(painter, start, end);
+                        break;
+                    }
+                    if (item.name == _traces[trace_dest][index].name && !_traces[trace_dest][index].marks){
+                        QPoint start = QPoint(x_start + item_width, y_start + height_item / 2);
+                        QPoint end = QPoint();
+                        auto item_dest = _traces[trace_dest][index];
+                        end.setX(item_dest.end * pixel_per_microsecond);
+                        end.setY(_timeScaleHeight + _timeTextHeight + trace_dest * (height_item + height_spacer) + height_item / 2);
+                        drawArrow(painter, start, end);
+                        break;
+                    }
+                }
+            }
+            painter.restore();
             painter.save();
             painter.scale(1.0 / _currentScale, 1.0);
 
@@ -153,5 +179,23 @@ QString TracesWidget::formatTime(long long time) const {
     } else {
         return QString("%1 s").arg(time / 1000000.0, 0, 'f', 2);
     }
+}
+
+void TracesWidget::drawArrow(QPainter &painter, const QPoint &start, const QPoint &end) {
+    double arrowSize = 15;
+
+    double angle = std::atan2(end.y() - start.y(), end.x() - start.x());
+
+    QPoint p1 = end - QPoint(
+                    arrowSize * std::cos(angle - M_PI / 6),
+                    arrowSize * std::sin(angle - M_PI / 6)
+                    );
+    QPoint p2 = end - QPoint(
+                    arrowSize * std::cos(angle + M_PI / 6),
+                    arrowSize * std::sin(angle + M_PI / 6)
+                    );
+    painter.drawLine(start, end);
+    painter.drawLine(end, p1);
+    painter.drawLine(end, p2);
 }
 

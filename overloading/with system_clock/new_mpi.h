@@ -86,11 +86,15 @@ int MPI_Isend(const void* buf, int count, MPI_Datatype datatype, int dest, int t
 }
 
 int MPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status) {
-    TRACE_MPI_SIMPLE(Recv, buf, count, datatype, source, tag, comm, status);
+    std::vector<int> source_vec;
+    source_vec.push_back(source);
+    TRACE_MPI_COLLECTIVE(Recv, source_vec, buf, count, datatype, source, tag, comm, status);
 }
 
 int MPI_Irecv(void* buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request* request) {
-    TRACE_MPI_SIMPLE(Irecv, buf, count, datatype, source, tag, comm, request);
+    std::vector<int> source_vec;
+    source_vec.push_back(source);
+    TRACE_MPI_COLLECTIVE(Irecv, source_vec, buf, count, datatype, source, tag, comm, request);
 }
 
 
@@ -181,7 +185,7 @@ int MPI_Reduce(const void* sendbuf, void* recvbuf, int count, MPI_Datatype datat
         for (int i = 0; i < size; i++) {
             if (i != root) sources.push_back(i);
         }
-        TRACE_MPI_COLLECTIVE(Reduce, sources, sendbuf, recvbuf, count, datatype, op, root, comm);
+        TRACE_MPI_SIMPLE(Reduce, sendbuf, recvbuf, count, datatype, op, root, comm);
     } else {
         // Не-root процессы отправляют root'у
         TRACE_MPI_POINT_TO_POINT(Reduce, root, sendbuf, recvbuf, count, datatype, op, root, comm);

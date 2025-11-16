@@ -22,8 +22,8 @@ private:
     std::vector<std::vector<TraceItem>> _traces;
     extractor ext;
 
-    const int height_item = 100;
-    const int height_spacer = 20;
+    const int height_item = 150;
+    const int height_spacer = 50;
     const int _timeScaleHeight = 30;
     const int _timeTextHeight = 15;
 
@@ -49,6 +49,7 @@ private:
     int calculateTotalHeight() const;
     long long calculateGridStep(long long timeRange, double pixelsPerUnit) const;
     QString formatTime(long long time) const;
+    void drawArrow(QPainter &painter, const QPoint &start, const QPoint &end);
 
 signals:
 };

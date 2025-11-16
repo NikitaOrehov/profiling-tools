@@ -14,6 +14,7 @@ struct TraceItem {
     long long start;
     long long end;
     std::vector<int> dests;
+    bool marks = 0;
 };
 
 class extractor
