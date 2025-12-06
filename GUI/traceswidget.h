@@ -27,6 +27,8 @@ private:
     const int _timeScaleHeight = 30;
     const int _timeTextHeight = 15;
 
+    std::string timeFormat = "ms";
+
     double pixel_per_microsecond = 0.1;
     double _currentScale = 1.0;
     long long _maxEnd = 0;
@@ -41,6 +43,7 @@ public:
     long long getMaxEnd() const { return _maxEnd; }
     double getTracesWidth() const {return _maxEnd * pixel_per_microsecond;}
     double getTotalWidth() const { return sizeHint().width(); }
+    void ZeroMarks();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -49,7 +52,7 @@ private:
     int calculateTotalHeight() const;
     long long calculateGridStep(long long timeRange, double pixelsPerUnit) const;
     QString formatTime(long long time) const;
-    void drawArrow(QPainter &painter, const QPoint &start, const QPoint &end);
+    void drawArrow(QPainter &painter, const QPointF &start, const QPointF &end);
 
 signals:
 };

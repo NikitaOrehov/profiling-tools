@@ -182,10 +182,11 @@ int MPI_Reduce(const void* sendbuf, void* recvbuf, int count, MPI_Datatype datat
         int size;
         MPI_Comm_size(comm, &size);
         std::vector<int> sources;
+        sources.push_back(-1);
         for (int i = 0; i < size; i++) {
             if (i != root) sources.push_back(i);
         }
-        TRACE_MPI_SIMPLE(Reduce, sendbuf, recvbuf, count, datatype, op, root, comm);
+        TRACE_MPI_COLLECTIVE(Reduce, sources, sendbuf, recvbuf, count, datatype, op, root, comm);
     } else {
         // Не-root процессы отправляют root'у
         TRACE_MPI_POINT_TO_POINT(Reduce, root, sendbuf, recvbuf, count, datatype, op, root, comm);

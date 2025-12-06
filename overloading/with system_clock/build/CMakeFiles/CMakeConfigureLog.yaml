@@ -3079,3 +3079,74 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/msys64/mingw64/share/cmake/Modules/FindMPI.cmake:1286 (try_compile)"
+      - "C:/msys64/mingw64/share/cmake/Modules/FindMPI.cmake:1330 (_MPI_try_staged_settings)"
+      - "C:/msys64/mingw64/share/cmake/Modules/FindMPI.cmake:1653 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-yw39b5"
+      binary: "D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-yw39b5"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-yw39b5'
+        
+        Run Build Command(s): C:/msys64/mingw64/bin/cmake.exe -E env VERBOSE=1 C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_b781f/fast
+        C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_b781f.dir\\build.make CMakeFiles/cmTC_b781f.dir/build
+        mingw32-make[1]: Entering directory 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-yw39b5'
+        Building CXX object CMakeFiles/cmTC_b781f.dir/test_mpi.cpp.obj
+        C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/cmTC_b781f.dir/includes_CXX.rsp  -o CMakeFiles\\cmTC_b781f.dir\\test_mpi.cpp.obj -c "D:\\institute\\profiling-tools\\overloading\\with system_clock\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yw39b5\\test_mpi.cpp"
+        Linking CXX executable cmTC_b781f.exe
+        C:\\msys64\\mingw64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_b781f.dir\\link.txt --verbose=1
+        C:\\msys64\\mingw64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_b781f.dir/objects.a
+        C:\\msys64\\mingw64\\bin\\ar.exe qc CMakeFiles\\cmTC_b781f.dir/objects.a @CMakeFiles\\cmTC_b781f.dir\\objects1.rsp
+        C:\\msys64\\mingw64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_b781f.dir/objects.a -Wl,--no-whole-archive -o cmTC_b781f.exe -Wl,--out-implib,libcmTC_b781f.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_b781f.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-yw39b5'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/msys64/mingw64/share/cmake/Modules/FindMPI.cmake:1286 (try_compile)"
+      - "C:/msys64/mingw64/share/cmake/Modules/FindMPI.cmake:1680 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-filr9l"
+      binary: "D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-filr9l"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-filr9l'
+        
+        Run Build Command(s): C:/msys64/mingw64/bin/cmake.exe -E env VERBOSE=1 C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_b20cd/fast
+        C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_b20cd.dir\\build.make CMakeFiles/cmTC_b20cd.dir/build
+        mingw32-make[1]: Entering directory 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-filr9l'
+        Building CXX object CMakeFiles/cmTC_b20cd.dir/test_mpi.cpp.obj
+        C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/cmTC_b20cd.dir/includes_CXX.rsp  -o CMakeFiles\\cmTC_b20cd.dir\\test_mpi.cpp.obj -c "D:\\institute\\profiling-tools\\overloading\\with system_clock\\build\\CMakeFiles\\CMakeScratch\\TryCompile-filr9l\\test_mpi.cpp"
+        Linking CXX executable cmTC_b20cd.exe
+        C:\\msys64\\mingw64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_b20cd.dir\\link.txt --verbose=1
+        C:\\msys64\\mingw64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_b20cd.dir/objects.a
+        C:\\msys64\\mingw64\\bin\\ar.exe qc CMakeFiles\\cmTC_b20cd.dir/objects.a @CMakeFiles\\cmTC_b20cd.dir\\objects1.rsp
+        C:\\msys64\\mingw64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_b20cd.dir/objects.a -Wl,--no-whole-archive -o cmTC_b20cd.exe -Wl,--out-implib,libcmTC_b20cd.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_b20cd.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'D:/institute/profiling-tools/overloading/with system_clock/build/CMakeFiles/CMakeScratch/TryCompile-filr9l'
+        
+      exitCode: 0
+...

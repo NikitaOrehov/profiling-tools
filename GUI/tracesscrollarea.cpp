@@ -85,7 +85,7 @@ void TracesScrollArea::zoomToMouse(double factor, const QPoint &globalPos) {
     double newScale = oldScale * factor;
 
     double minScale = static_cast<double>(viewport()->width()) / tracesWidget->getTracesWidth();
-    newScale = qBound(minScale, newScale, 15.0);
+    newScale = qBound(minScale, newScale, 400.0);
 
     tracesWidget->setScale(newScale);
 

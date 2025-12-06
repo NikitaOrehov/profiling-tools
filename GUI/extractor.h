@@ -33,7 +33,6 @@ public:
         }
         _count_trace--;
         correct_data();
-        print();
     }
 
     void extract_data(std::string path){
