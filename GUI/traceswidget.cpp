@@ -131,13 +131,15 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
                     if (item.name == "Send" && _traces[trace_dest][index].name == "Recv" &&
                         !_traces[trace_dest][index].marks &&
                         _traces[trace_dest][index].dests.at(0) == number_trace) {
-
-                        QPointF start = QPointF(x_start + item_width, y_start + height_item / 2);
+                        double offes_start = item_width * 0.2 > 20 ? 20 : item_width * 0.1;
+                        QPointF start = QPointF(x_start + offes_start, y_start + height_item / 2);
                         auto item_dest = _traces[trace_dest][index];
 
+                        double item_width_dest = (item_dest.end - item_dest.start) * pixel_per_microsecond;
+                        double offes_end = item_width_dest * 0.1 > 20 ? 20 : item_width_dest * 0.1;
                         int dest_y_start = _timeScaleHeight + _timeTextHeight + trace_dest * (height_item + height_spacer);
                         QPointF end = QPointF(
-                            item_dest.end * pixel_per_microsecond,
+                            item_dest.start * pixel_per_microsecond + offes_end,
                             dest_y_start + height_item / 2
                             );
 
@@ -147,12 +149,15 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
                     }
 
                     if (item.name == _traces[trace_dest][index].name && !_traces[trace_dest][index].marks) {
-                        QPointF start = QPointF(x_start + item_width, y_start + height_item / 2);
+                        double offes_start = item_width * 0.2 > 20 ? 20 : item_width * 0.1;
+                        QPointF start = QPointF(x_start + offes_start, y_start + height_item / 2);
                         auto item_dest = _traces[trace_dest][index];
 
+                        double item_width_dest = (item_dest.end - item_dest.start) * pixel_per_microsecond;
+                        double offes_end = item_width_dest * 0.1 > 20 ? 20 : item_width_dest * 0.1;
                         int dest_y_start = _timeScaleHeight + _timeTextHeight + trace_dest * (height_item + height_spacer);
                         QPointF end = QPointF(
-                            item_dest.end * pixel_per_microsecond,
+                            item_dest.start * pixel_per_microsecond + offes_end,
                             dest_y_start + height_item / 2
                             );
                         drawArrow(painter, start, end);
