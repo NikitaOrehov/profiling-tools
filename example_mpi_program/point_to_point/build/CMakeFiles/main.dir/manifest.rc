@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "D:/institute/profiling-tools/example_mpi_program/point_to_point/build/CMakeFiles/main.dir/embed.manifest"

@@ -24,20 +24,12 @@ public:
         QPushButton *resetBtn = new QPushButton("Reset Zoom");
         QLabel *helpLabel = new QLabel("Shift+Drag: Pan | Wheel: Scroll");
 
-        // controlLayout->addWidget(zoomInBtn);
-        // controlLayout->addWidget(zoomOutBtn);
-        // controlLayout->addWidget(resetBtn);
-        // controlLayout->addWidget(helpLabel);
         controlLayout->addStretch();
 
         TracesScrollArea *scrollArea = new TracesScrollArea();
 
         layout->addLayout(controlLayout);
         layout->addWidget(scrollArea);
-
-            // connect(zoomInBtn, &QPushButton::clicked, scrollArea, &TracesScrollArea::zoomIn);
-            // connect(zoomOutBtn, &QPushButton::clicked, scrollArea, &TracesScrollArea::zoomOut);
-            // connect(resetBtn, &QPushButton::clicked, scrollArea, &TracesScrollArea::resetZoom);
     }
 };
 

@@ -11,6 +11,8 @@ TracesScrollArea::TracesScrollArea(QWidget *parent) : QScrollArea(parent) {
     tracesWidget->setMinimumSize(2000, 1000);
 
     setMouseTracking(true);
+
+    zoomToMouse(1, QCursor::pos());
 }
 
 void TracesScrollArea::zoomIn() {
@@ -108,12 +110,6 @@ void TracesScrollArea::zoomToMouse(double factor, const QPoint &globalPos) {
     verticalScrollBar()->setValue(newVScroll);
 
     updateScrollBars();
-
-    // qDebug() << "Zoom:" << oldScale << "->" << newScale
-    //          << "Min scale:" << minScale
-    //          << "Widget width:" << maxWidth
-    //          << "Viewport:" << viewport()->width()
-    //          << "Scroll:" << newHScroll << "/" << horizontalScrollBar()->maximum();
 }
 
 
@@ -130,7 +126,4 @@ void TracesScrollArea::updateScrollBars() {
 
     horizontalScrollBar()->setPageStep(viewportSize.width());
     verticalScrollBar()->setPageStep(viewportSize.height());
-
-    // qDebug() << "Scrollbars - Content:" << contentWidth << "Viewport:" << viewportSize.width()
-    //          << "Max scroll:" << horizontalScrollBar()->maximum();
 }

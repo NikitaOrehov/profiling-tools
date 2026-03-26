@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/institute/profiling-tools/example_mpi_program/collective/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

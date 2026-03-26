@@ -1,0 +1,8 @@
+[
+{
+  "directory": "D:/institute/profiling-tools/example_mpi_program/point_to_point/build",
+  "command": "C:\\PROGRA~1\\MICROS~2\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -external:I\"C:\\Program Files (x86)\\Microsoft SDKs\\MPI\\Include\" -external:W0 /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -std:c++17 -MDd /FoCMakeFiles\\main.dir\\main.cpp.obj /FdCMakeFiles\\main.dir\\ /FS -c D:\\institute\\profiling-tools\\example_mpi_program\\point_to_point\\main.cpp",
+  "file": "D:/institute/profiling-tools/example_mpi_program/point_to_point/main.cpp",
+  "output": "D:/institute/profiling-tools/example_mpi_program/point_to_point/build/CMakeFiles/main.dir/main.cpp.obj"
+}
+]

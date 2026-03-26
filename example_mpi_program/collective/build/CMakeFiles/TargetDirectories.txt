@@ -1,0 +1,3 @@
+D:/institute/profiling-tools/example_mpi_program/collective/build/CMakeFiles/main.dir
+D:/institute/profiling-tools/example_mpi_program/collective/build/CMakeFiles/edit_cache.dir
+D:/institute/profiling-tools/example_mpi_program/collective/build/CMakeFiles/rebuild_cache.dir

@@ -1,3 +1,0 @@
-MPI_Init 0 9353
-MPI_Send 9362 9608
-MPI_Finalize 9611 10496

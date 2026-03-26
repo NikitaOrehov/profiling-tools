@@ -1,32 +1,45 @@
 cmake_minimum_required(VERSION 3.19)
 project(GUI LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+if (MSVC)
+    add_compile_options(/D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH)
+endif()
 
-qt_standard_project_setup()
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
-qt_add_executable(GUI
+
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+
+
+add_executable(GUI
     WIN32 MACOSX_BUNDLE
     main.cpp
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    extractor.h extractor.cpp
-    traceswidget.h traceswidget.cpp
-    tracesscrollarea.h tracesscrollarea.cpp
-
-
+    extractor.h
+    extractor.cpp
+    traceswidget.h
+    traceswidget.cpp
+    tracesscrollarea.h
+    tracesscrollarea.cpp
 )
+
 
 target_link_libraries(GUI
     PRIVATE
-        Qt::Core
-        Qt::Widgets
+        Qt6::Core
+        Qt6::Widgets
 )
-target_link_libraries(GUI PRIVATE Qt6::Widgets)
-target_link_libraries(GUI PRIVATE Qt6::Widgets)
+
+
+qt6_wrap_ui(GUI_UI_HEADERS
+    mainwindow.ui
+)
+target_sources(GUI PRIVATE ${GUI_UI_HEADERS})
+
 
 include(GNUInstallDirs)
 
@@ -36,9 +49,5 @@ install(TARGETS GUI
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-qt_generate_deploy_app_script(
-    TARGET GUI
-    OUTPUT_SCRIPT deploy_script
-    NO_UNSUPPORTED_PLATFORM_ERROR
-)
-install(SCRIPT ${deploy_script})
+
+
