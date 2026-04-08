@@ -24,9 +24,9 @@ private:
     //std::vector<int> _cache;
     extractor ext;
 
-    const int height_item = 150;
+    const int height_item = 100;
     const double pixel_per_microsecond = 0.1;
-    const int height_spacer = 50;
+    const int height_spacer = 30;
     const int _timeScaleHeight = 30;
     const int _timeTextHeight = 15;
 

@@ -2,8 +2,8 @@
 
 TracesWidget::TracesWidget(QWidget *parent)
     : QWidget{parent}
-    , ext("D:/institute/profiling-tools/example_mpi_program/ring (8 processes)/Traces1")
-    , _traces(ext.GetTraces())
+    , ext("D:/institute/profiling-tools/example_mpi_program/simple_method/Traces1") //D:/institute/profiling-tools/example_mpi_program/bubble_sort/Traces2
+    , _traces(ext.GetTraces()) //D:/institute/profiling-tools/example_mpi_program/matrix/Traces2
     , _arrows(ext.GetArrows())
 {
     _maxEnd = ext.GetMaxEnd();
