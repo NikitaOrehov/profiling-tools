@@ -121,40 +121,31 @@ int MPI_Irecv(void* buf, int count, MPI_Datatype datatype, int source, int tag, 
 int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag,
                  void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag,
                  MPI_Comm comm, MPI_Status *status) {
-    int rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &rank);
     std::vector<int> vec_source;
-    vec_source.push_back(-2);
-    if (rank == dest){
-        vec_source.push_back(source);
-        TRACE_MPI_COLLECTIVE(Sendrecv, vec_source, sendbuf, sendcount, sendtype, dest, sendtag, 
-            recvbuf, recvcount, recvtype, source, recvtag, comm, status);
+    if (source == dest){
+        vec_source = {-2, dest};
     }
     else{
-        vec_source.push_back(dest);
-        TRACE_MPI_COLLECTIVE(Sendrecv, vec_source, sendbuf, sendcount, sendtype, dest, sendtag, 
-            recvbuf, recvcount, recvtype, source, recvtag, comm, status);
+        vec_source = {dest, -1, source};
     }
+
+    TRACE_MPI_COLLECTIVE(Sendrecv, vec_source, sendbuf, sendcount, sendtype, dest, sendtag, 
+        recvbuf, recvcount, recvtype, source, recvtag, comm, status);
 }
 
 int MPI_Sendrecv_replace(void *buf, int count, MPI_Datatype datatype, int dest, int sendtag,
                          int source, int recvtag, MPI_Comm comm, MPI_Status *status) {
-    int rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &rank);
     std::vector<int> vec_source;
-    vec_source.push_back(-2);
-    if (rank == dest){
-        vec_source.push_back(source);
-        TRACE_MPI_COLLECTIVE(Sendrecv_replace, vec_source, buf, count, datatype, dest, sendtag, 
-            source, recvtag, comm, status);
+    if (source == dest){
+        vec_source = {-2, dest};
     }
     else{
-        vec_source.push_back(dest);
-        TRACE_MPI_COLLECTIVE(Sendrecv_replace, vec_source, buf, count, datatype, dest, sendtag, 
-            source, recvtag, comm, status);
+        vec_source = {dest, -1, source};
     }
-}
 
+    TRACE_MPI_COLLECTIVE(Sendrecv_replace, vec_source, buf, count, datatype, dest, sendtag, 
+            source, recvtag, comm, status);
+}
 
 
 
@@ -428,6 +419,21 @@ int MPI_Allgather(const void* sendbuf, int sendcount, MPI_Datatype sendtype,
     }
     TRACE_MPI_COLLECTIVE(Allgather, dests, sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm);
 }
+
+int MPI_Allgatherv(const void* sendbuf, int sendcount, MPI_Datatype sendtype,
+                   void* recvbuf, const int* recvcounts, const int* displs,
+                   MPI_Datatype recvtype, MPI_Comm comm) {
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> dests = {-2};
+    for (int i = 0; i < size; i++) {
+        if (i != rank) dests.push_back(i);
+    }
+    TRACE_MPI_COLLECTIVE(Allgatherv, dests, sendbuf, sendcount, sendtype, 
+                         recvbuf, recvcounts, displs, recvtype, comm);
+}
+
 
 int MPI_Alltoall(const void* sendbuf, int sendcount, MPI_Datatype sendtype,
                  void* recvbuf, int recvcount, MPI_Datatype recvtype, MPI_Comm comm){

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\institute\profiling-tools\example_mpi_program\simple_number\build\CMakeFiles\99b93524eed69d8e9c20c22c71edbc83\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{545C71B9-5A7C-30E0-B968-4CD35B74C233}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -2,23 +2,26 @@
 
 TracesWidget::TracesWidget(QWidget *parent)
     : QWidget{parent}
-    , ext("D:/institute/profiling-tools/example_mpi_program/simple_method/Traces1") //D:/institute/profiling-tools/example_mpi_program/bubble_sort/Traces2
-    , _traces(ext.GetTraces()) //D:/institute/profiling-tools/example_mpi_program/matrix/Traces2
-    , _arrows(ext.GetArrows())
-{
+    , ext("C:/Users/ornik/source/repos/ppc-2025-processes-informatics/build/bin/Traces6")
+    , _traces(ext.GetTraces()) //D:/institute/profiling-tools/example_mpi_program/simple_method/Traces1
+    , _arrows(ext.GetArrows()) //D:/institute/profiling-tools/example_mpi_program/bubble_sort/Traces1 +
+                               //D:/institute/profiling-tools/example_mpi_program/radix_sort_double_batcher_merge/Traces1
+                               //D:/institute/profiling-tools/example_mpi_program/global_opt/Traces1
+{//D:/institute/profiling-tools/example_mpi_program/matrix_cannon/Traces1
+//C:/Users/ornik/source/repos/ppc-2025-processes-informatics/build/bin/Traces1
+    qDebug() << "test1.1\n";
     _maxEnd = ext.GetMaxEnd();
-
-    //_cache.assign(_traces.size(), 0);
+    _currentScale = 1.0;
+    virtualTraceHeight =  _timeScaleHeight + _timeTextHeight + _traces.size() * (height_item + height_spacer);
+    virtualTraceLength = _maxEnd * pixel_per_microsecond;
 
     setMouseTracking(true);
+    qDebug() << "end constructor\n";
 }
 
 
 QSize TracesWidget::sizeHint() const {
-    int totalHeight = calculateTotalHeight();
-    int totalWidth = getTracesWidth() * _currentScale;
-
-    return QSize(totalWidth, totalHeight);
+    return this->size();
 }
 
 QSize TracesWidget::minimumSizeHint() const {
@@ -27,47 +30,30 @@ QSize TracesWidget::minimumSizeHint() const {
 
 void TracesWidget::setScale(double scale) {
     _currentScale = scale;
+    virtualTraceLength = _maxEnd * pixel_per_microsecond * scale;
+}
+
+void TracesWidget::SetVisibleRect(QRectF rect){
+    visibleRect_ = rect;
     update();
-    updateGeometry();
+    //updateGeometry();
 }
 
 double TracesWidget::getScale() const { return _currentScale; }
 
-
-QRectF TracesWidget::getVisibleSceneRect() const {
-    if (!parent()) {
-        return QRectF(0, 0, width() / _currentScale, height());
-    }
-
-    const QScrollArea* scrollArea = qobject_cast<const QScrollArea*>(parent()->parent());
-    if (!scrollArea) {
-        return QRectF(0, 0, width() / _currentScale, height());
-    }
-
-    QPoint topLeft = scrollArea->viewport()->rect().topLeft();
-    QPoint bottomRight = scrollArea->viewport()->rect().bottomRight();
-
-
-    double sceneLeft = (topLeft.x() + scrollArea->horizontalScrollBar()->value());
-    double sceneTop = topLeft.y() + scrollArea->verticalScrollBar()->value();
-
-
-
-    return QRectF(sceneLeft, sceneTop, bottomRight.x(), bottomRight.y());
-}
-
 void TracesWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
 
-    QRectF visibleRect = getVisibleSceneRect();
-
+    painter.translate(-visibleRect_.left(), -visibleRect_.top());
     painter.save();
-    painter.fillRect(visibleRect, QColor(240, 240, 240));
-    painter.setPen(QPen(Qt::black, 1));
-    painter.drawLine(visibleRect.topLeft().x(), _timeScaleHeight,  visibleRect.topRight().x(), _timeScaleHeight);
 
+    painter.setPen(QPen(Qt::black, 1));
+    qDebug() << "virtualLenght: " << virtualTraceLength << "\n";
+    qDebug() << "=================\nleft visible: " << visibleRect_.left() << "\nright visible: "<< visibleRect_.right() << "\n===================\n";
+    qDebug() << "=================\nleft width: " << rect().width() << "\nright rect: "<< rect().height() << "\n===================\n\n";
+    painter.drawLine(visibleRect_.left(), _timeScaleHeight, visibleRect_.right(), _timeScaleHeight);
     long long timeRange = _maxEnd;
-    double pixelsPerUnit = (getTracesWidth() * _currentScale) / timeRange;
+    double pixelsPerUnit = getTracesWidth() / timeRange;
     long long gridStep = calculateGridStep(timeRange, pixelsPerUnit);
 
     QFont font = painter.font();
@@ -76,8 +62,8 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
 
     for (long long time = gridStep; time <= _maxEnd; time += gridStep) { //можно ещё лучше !!?
         double x = time * pixel_per_microsecond * _currentScale;
-        if (x < visibleRect.topLeft().x()) continue;
-        if (x > visibleRect.topRight().x()) break;
+        if (x < visibleRect_.topLeft().x()) continue;
+        if (x > visibleRect_.topRight().x()) break;
         painter.drawLine(x, _timeScaleHeight - 10, x, _timeScaleHeight);
 
         QString timeText = formatTime(time);
@@ -89,18 +75,13 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
     painter.save();
     painter.scale(_currentScale, 1.0);
 
-    // QPen rectPen(Qt::blue);
-    // rectPen.setWidthF(2.0);  // 2 логических пикселя
-    // rectPen.setCosmetic(false);  // Не косметическое - будет масштабироваться
 
-    // painter.setPen(rectPen);
-    // painter.setBrush(QBrush(QColor(200, 220, 255)));
 
     for (size_t number_trace = 0; number_trace < _traces.size(); ++number_trace) {
         int y_start = _timeScaleHeight + _timeTextHeight + number_trace * (height_item + height_spacer);
 
-        if (y_start + height_item < visibleRect.topLeft().y()) continue;
-        if (y_start> visibleRect.bottomLeft().y()) break;
+        if (y_start + height_item < visibleRect_.topLeft().y()) continue;
+        if (y_start> visibleRect_.bottomLeft().y()) break;
 
         painter.setPen(QPen(Qt::black, 1));
         painter.drawText(10, y_start + height_item / 2, QString("Trace %1").arg(number_trace + 1));
@@ -112,8 +93,8 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
             double x_start = item.start * pixel_per_microsecond;
             double item_width = (item.end - item.start) * pixel_per_microsecond;
 
-            if ((x_start + item_width) * _currentScale < visibleRect.topLeft().x()) continue;
-            if (x_start * _currentScale > visibleRect.topRight().x()) break;
+            if ((x_start + item_width) * _currentScale < visibleRect_.topLeft().x()) continue;
+            if (x_start * _currentScale > visibleRect_.topRight().x()) break;
 
             QRectF rectF(x_start, y_start, item_width, height_item);
             painter.drawRect(rectF);
@@ -146,7 +127,7 @@ void TracesWidget::paintEvent(QPaintEvent *event) {
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     for (auto& it: _arrows){
-        if (isVisibleArrow(visibleRect, it)){
+        if (isVisibleArrow(visibleRect_, it)){
             drawArrow(painter, it);
         }
     }
@@ -186,16 +167,12 @@ bool TracesWidget::isVisibleArrow(QRectF& visibleRect, const Arrow& arrow) const
     return false;
 }
 
-
-int TracesWidget::calculateTotalHeight() const {
-    return _timeScaleHeight + _timeTextHeight + _traces.size() * (height_item + height_spacer);
-}
-
-
 long long TracesWidget::calculateGridStep(long long timeRange, double pixelsPerUnit) const {
     double desiredPixelStep = 50.0;
     long long timeStep = desiredPixelStep / pixelsPerUnit;
 
+
+    if (timeStep <= 5) return 5;
     if (timeStep <= 10) return 10;
     if (timeStep <= 50) return 50;
     if (timeStep <= 100) return 100;
@@ -203,7 +180,7 @@ long long TracesWidget::calculateGridStep(long long timeRange, double pixelsPerU
     if (timeStep <= 1000) return 1000;
     if (timeStep <= 5000) return 5000;
 
-    for (long long i = 10000; i <= 1000000000000000; i += 5000){
+    for (long long i = 5000; i <= 1000000000000000; i += 1000){
         if (timeStep < i) return i;
     }
     return 1000000000000000;

@@ -19,10 +19,10 @@ class TracesWidget : public QWidget
 {
     Q_OBJECT
 private:
-    const std::vector<std::vector<TraceItem>>& _traces;
-    const std::vector<Arrow>& _arrows;
-    //std::vector<int> _cache;
     extractor ext;
+    const std::vector<std::vector<TraceItem>> _traces;
+    const std::vector<Arrow> _arrows;
+    QRectF visibleRect_;
 
     const int height_item = 100;
     const double pixel_per_microsecond = 0.1;
@@ -34,6 +34,8 @@ private:
 
     double _currentScale = 1.0;
     long long _maxEnd = 0;
+    long long int virtualTraceHeight;
+    long long int virtualTraceLength;
 
 
 public:
@@ -43,19 +45,17 @@ public:
     QSize minimumSizeHint() const override;
     void setScale(double scale);
     double getScale() const;
-    long long getMaxEnd() const { return _maxEnd; }
-    double getTracesWidth() const {return _maxEnd * pixel_per_microsecond;}
-    double getTotalWidth() const { return sizeHint().width(); }
+    double getTracesWidth() const {return virtualTraceLength;}
+    double getTracesHeight() const {return virtualTraceHeight;}
+    void SetVisibleRect(QRectF rect);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    int calculateTotalHeight() const;
     long long calculateGridStep(long long timeRange, double pixelsPerUnit) const;
     QString formatTime(long long time) const;
     void drawArrow(QPainter &painter, const Arrow& arrow);
-    QRectF getVisibleSceneRect() const;
     bool isVisibleArrow(QRectF& visibleRect, const Arrow& arrow) const;
 
 signals:

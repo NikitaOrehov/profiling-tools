@@ -52,6 +52,7 @@ public:
         _count_trace--;
         correct_data();
         fulfill_arrows();
+        qDebug() << "end ext\n";
     }
 
 
@@ -104,6 +105,7 @@ private:
         for (int fromTrace = 0; fromTrace < _traces.size(); fromTrace++){
             int y_start = _timeScaleHeight + _timeTextHeight + fromTrace * (height_item + height_spacer);
             for (auto& fromItem: _traces[fromTrace]){
+                if ((fromItem.name == "Sendrecv" || fromItem.name == "Sendrecv_replace") && !fromItem.dests.empty() && fromItem.dests.front() != -2) sendrecv_replace_arrows(fromTrace, fromItem, y_start);
                 for (auto& toTrace: fromItem.dests){
                     if (toTrace == -1) {break;}
                     if (toTrace == -2) {continue;}
@@ -143,6 +145,33 @@ private:
                     }
                 }
             }
+        }
+    }
+
+    void sendrecv_replace_arrows(int fromTrace, TraceItem& fromItem, int y_start){
+        int toTrace = fromItem.dests.front();
+        for (auto& toItem: _traces[toTrace]){
+            if (!(toItem.name == "Sendrecv" || toItem.name == "Sendrecv_replace")) continue;
+            if (!(!toItem.dests.empty() && toItem.dests.front() != -2 && toItem.dests[2] != fromTrace)) continue;
+
+            double x_start = fromItem.start * pixel_per_microsecond;
+            double item_width = (fromItem.end - fromItem.start) * pixel_per_microsecond;
+            double offes_start = item_width * 0.1;
+            QPointF start = QPointF(x_start + offes_start, y_start + height_item / 2);
+
+            double item_width_dest = (toItem.end - toItem.start) * pixel_per_microsecond;
+            double offes_end = item_width_dest * 0.1 > 20 ? 20 : item_width_dest * 0.1;
+            int dest_y_start = _timeScaleHeight + _timeTextHeight + toTrace * (height_item + height_spacer);
+            QPointF end = QPointF(
+                toItem.start * pixel_per_microsecond + offes_end,
+                dest_y_start + height_item / 2
+                );
+
+            Arrow arrow(start, end, toItem.dests.front() == -2);
+            arrows.push_back(arrow);
+
+            toItem.dests[2] = -5;
+            break;
         }
     }
 
