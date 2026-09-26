@@ -1,0 +1,3 @@
+D:/institute/profiling-tools/example_mpi_program/point_to_point/BSend_big/build/CMakeFiles/main.dir
+D:/institute/profiling-tools/example_mpi_program/point_to_point/BSend_big/build/CMakeFiles/edit_cache.dir
+D:/institute/profiling-tools/example_mpi_program/point_to_point/BSend_big/build/CMakeFiles/rebuild_cache.dir

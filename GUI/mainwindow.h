@@ -1,37 +1,25 @@
-#include <QApplication>
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
 #include <QMainWindow>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QLabel>
-#include "tracesscrollarea.h"
 
-class MainWindow : public QMainWindow
-{
+class TracesScrollArea;
+
+class MainWindow : public QMainWindow {
+    Q_OBJECT
+
 public:
-    MainWindow(QWidget *parent = nullptr) : QMainWindow(parent) {
-        setGeometry(100, 100, 1200, 800);
+    explicit MainWindow(QWidget *parent = nullptr);
 
-        QWidget *centralWidget = new QWidget();
-        setCentralWidget(centralWidget);
+private slots:
+    void onOpenTrace();
 
-        QVBoxLayout *layout = new QVBoxLayout(centralWidget);
+private:
+    void createMenu();
 
-        // Панель управления
-        QHBoxLayout *controlLayout = new QHBoxLayout();
-        QPushButton *zoomInBtn = new QPushButton("Zoom In (Ctrl+Wheel)");
-        QPushButton *zoomOutBtn = new QPushButton("Zoom Out (Ctrl+Wheel)");
-        QPushButton *resetBtn = new QPushButton("Reset Zoom");
-        QLabel *helpLabel = new QLabel("Shift+Drag: Pan | Wheel: Scroll");
-
-        controlLayout->addStretch();
-
-        TracesScrollArea *scrollArea = new TracesScrollArea();
-
-        layout->addLayout(controlLayout);
-        layout->addWidget(scrollArea);
-    }
+    TracesScrollArea* tracesArea = nullptr;
 };
 
+#endif
 
 

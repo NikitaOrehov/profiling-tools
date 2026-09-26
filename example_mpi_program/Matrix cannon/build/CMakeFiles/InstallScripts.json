@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/institute/profiling-tools/example_mpi_program/Matrix cannon/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

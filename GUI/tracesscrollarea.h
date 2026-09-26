@@ -32,6 +32,8 @@ public:
     void zoomIn();
     void zoomOut();
     void resetZoom();
+    void onTraceChanged();
+    TracesWidget* getTracesWidget() const { return tracesWidget; }
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

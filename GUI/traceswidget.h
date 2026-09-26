@@ -19,9 +19,9 @@ class TracesWidget : public QWidget
 {
     Q_OBJECT
 private:
-    extractor ext;
-    const std::vector<std::vector<TraceItem>> _traces;
-    const std::vector<Arrow> _arrows;
+    std::unique_ptr<extractor> ext;
+    const std::vector<std::vector<TraceItem>>* _traces = nullptr;
+    const std::vector<Arrow>* _arrows = nullptr;
     QRectF visibleRect_;
 
     const int height_item = 100;
@@ -39,15 +39,16 @@ private:
 
 
 public:
-    TracesWidget(QWidget *parent = nullptr);
+    explicit TracesWidget(QWidget *parent = nullptr);
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
     void setScale(double scale);
     double getScale() const;
-    double getTracesWidth() const {return virtualTraceLength;}
-    double getTracesHeight() const {return virtualTraceHeight;}
+    double getTracesWidth() const;
+    double getTracesHeight() const;
     void SetVisibleRect(QRectF rect);
+    bool loadPath(const QString& path);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -55,8 +56,9 @@ protected:
 private:
     long long calculateGridStep(long long timeRange, double pixelsPerUnit) const;
     QString formatTime(long long time) const;
-    void drawArrow(QPainter &painter, const Arrow& arrow);
+    void drawArrow(QPainter& painter, const QPointF& start, const QPointF& end, bool double_direction);
     bool isVisibleArrow(QRectF& visibleRect, const Arrow& arrow) const;
+    QColor colorForOperation(const std::string& name);
 
 signals:
 };

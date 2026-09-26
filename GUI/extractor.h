@@ -14,8 +14,11 @@
 struct TraceItem {
     std::string name;
     long long start;
-    long long end;
+    long long end = -1;
+    bool finished = false;
     std::vector<int> dests;
+    std::vector<size_t> outgoing_idx;
+    std::vector<size_t> incoming_idx;
 };
 
 struct Arrow{
@@ -30,7 +33,7 @@ class extractor
 private:
     std::string _path;
     std::vector<std::vector<TraceItem>> _traces;
-    std::vector<Arrow> arrows;
+    std::vector<Arrow> _arrows;
     std::vector<long long int> _starts;
     size_t _count_trace = 0;
 
@@ -51,12 +54,14 @@ public:
         }
         _count_trace--;
         correct_data();
+        check_deadlock();
         fulfill_arrows();
         qDebug() << "end ext\n";
     }
 
 
     const std::vector<std::vector<TraceItem>>& GetTraces() const { return _traces;}
+
     long long int GetMaxEnd() const {
         long long int max = 0;
         for (size_t i = 0; i < _traces.size(); i++){
@@ -65,7 +70,7 @@ public:
         return max;
     }
 
-    const std::vector<Arrow>& GetArrows() const {return arrows;}
+    const std::vector<Arrow>& GetArrows() const { return _arrows; }
 
     void print() const {
         std::cout << "=== Trace Data ===" << std::endl;
@@ -132,8 +137,10 @@ private:
                             dest_y_start + height_item / 2
                             );
 
-                        Arrow arrow(start, end, toItem.dests.front() == -2);
-                        arrows.push_back(arrow);
+                        size_t idx = _arrows.size();
+                        _arrows.push_back(Arrow(start, end, toItem.dests.front() == -2));
+                        fromItem.outgoing_idx.push_back(idx);
+                        toItem.incoming_idx.push_back(idx);
 
                         auto it = std::find(toItem.dests.begin(), toItem.dests.end(), fromTrace);
                         toItem.dests.erase(it);
@@ -167,8 +174,10 @@ private:
                 dest_y_start + height_item / 2
                 );
 
-            Arrow arrow(start, end, toItem.dests.front() == -2);
-            arrows.push_back(arrow);
+            size_t idx = _arrows.size();
+            _arrows.push_back(Arrow(start, end, toItem.dests.front() == -2));
+            fromItem.outgoing_idx.push_back(idx);
+            toItem.incoming_idx.push_back(idx);
 
             toItem.dests[2] = -5;
             break;
@@ -212,23 +221,45 @@ private:
             _starts.push_back(start);
         }
 
-        std::string line;
+        std::string line, trash;
         std::vector<TraceItem> trace;
-        //std::vector<int> dests;
         while (std::getline(file, line)) {
             TraceItem item;
             std::istringstream iss(line);
-            if (!(iss >> item.name >> item.start >> item.end)) std::cerr << "can not parse data\n";
+            if (!(iss >> item.name >> trash >> item.start)) std::cerr << "can not parse data\n";
 
-            int dest;
-            while (iss >> dest) item.dests.push_back(dest);
+            while (iss >> trash){
+                if (trash == "END"){
+                    iss >> item.end;
+                    item.finished = true;
+                    break;
+                }
 
-            trace.push_back(item);
+                item.dests.push_back(std::stoi(trash));
+            }
+
+            trace.push_back(std::move(item));
 
         }
         _traces.push_back(trace);
 
         file.close();
+    }
+
+    void check_deadlock(){
+        long long int max = 0;
+        for (size_t i = 0; i < _traces.size(); i++){
+            if (_traces[i].back().end != -1){
+                if (_traces[i].back().end > max) max = _traces[i].back().end;
+            }
+            else{
+                if (_traces[i].back().start > max) max = _traces[i].back().start;
+            }
+        }
+
+        for (auto& it: _traces){
+            if (it.back().end == -1) it.back().end = max + 3000;
+        }
     }
 
     void correct_data(){
@@ -238,9 +269,13 @@ private:
         for (size_t i = 0; i < _starts.size(); i++){
             if (i == index) continue;
             long long int offset = _starts[i] - _starts[index];
-            for (size_t j = 0; j < _traces[i].size(); j++){
+            for (size_t j = 0; j < _traces[i].size() - 1; j++){
                 _traces[i][j].start += offset;
                 _traces[i][j].end += offset;
+            }
+            _traces[i][_traces[i].size() - 1].start += offset;
+            if (_traces[i][_traces[i].size() - 1].end != -1){
+                _traces[i][_traces[i].size() - 1].end += offset;
             }
         }
     }
