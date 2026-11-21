@@ -195,7 +195,7 @@ private:
             }
         }
         else if (to == "Recv"){
-            if (from == "Send" || from == "Ssend" || from == "Rsend" || from == "Bsend"){
+            if (from == "Send" || from == "Ssend" || from == "Rsend" || from == "Bsend" || from == "Isend"){
                 if (fromTrace == toItem.dests[1]){
                     return 1;
                 }
